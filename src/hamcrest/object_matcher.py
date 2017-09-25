@@ -1,4 +1,5 @@
 from hamcrest.core.base_matcher import BaseMatcher
+from tabulate import tabulate
 
 class ObjectsMatch(BaseMatcher):
 
@@ -15,23 +16,27 @@ class ObjectsMatch(BaseMatcher):
         if len(item) != len(self.object):
             self.find_missing_fields(item)
         else:
-            self.incorrect_fields = {key: self.object[key] for key in item if item[key] != self.object[key]}
+            self.incorrect_fields = {key: item[key] for key in item if item[key] != self.object[key]}
 
-        return len(self.incorrect_fields) == 0 and self.difference == set() and self.extra_fields == set()
+        return not self.incorrect_fields and self.difference == set() and self.extra_fields == set()
 
+    # the 'expected' response
     def describe_to(self, description):
+        # description.append_text("\n")
+        # description.append_text(self.extra_fields)
+        # description.append_text("\n")
+        # description.append_text(self.difference)
         description.append_text("\n")
-        description.append_text(self.extra_fields)
-        description.append_text("\n")
-        description.append_text(self.difference)
-        description.append_text("\n")
-        for key in self.incorrect_fields:
-            description.append_text("{}: {}\n".format(key, self.object[key]))
+        # for key in self.incorrect_fields:
+        #     description.append_text("{}: {}\n".format(key, self.object[key]))
+        objectsss = {key: [self.object[key]] for key in self.incorrect_fields }
+        description.append_text(tabulate(objectsss, headers='keys', tablefmt='fancy_grid'))
 
+    # the 'but got' part
     def describe_mismatch(self, item, mismatch_description):
         mismatch_description.append_text("\n")
-        for key in self.incorrect_fields:
-            mismatch_description.append_text("{}: {}\n".format(key, item[key]))
+        required_tabular_format = {key: [self.incorrect_fields[key]] for key in self.incorrect_fields}
+        mismatch_description.append_text(tabulate(required_tabular_format, headers='keys', tablefmt='fancy_grid'))
 
     def find_missing_fields(self, item):
         if len(item) > len(self.object):

@@ -5,14 +5,14 @@ from src.hamcrest.object_matcher import the_same_object
 def test_objects_match():
     map_1 = {
         'item': 5,
-        'value': 10,
+        'value': 1,
         'name': 'Hamcrest'
     }
 
     map_2 = {
         'item': 5,
         'value': 10,
-        'name': 'Hamcrest'
+        'name': 'bill'
     }
 
     assert_that(map_1, is_(the_same_object(map_2)))
