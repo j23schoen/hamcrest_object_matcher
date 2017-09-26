@@ -1,4 +1,4 @@
-from hamcrest import assert_that, is_
+from hamcrest import assert_that, is_, equal_to
 from datetime import datetime, date
 from src.hamcrest.object_matcher import the_same_object
 
@@ -15,9 +15,9 @@ def test_objects_match():
         'name': 'bill'
     }
 
-    assert_that(map_1, is_(the_same_object(map_2)))
+    assert_that(map_1, not is_(the_same_object(map_2)))
 
-def test_objects_have_different_keys():
+def test_first_object_has_additional_fields():
     map_1 = {
         'name': 'Jimmy',
         'hobby': 'Surfing',
@@ -28,4 +28,16 @@ def test_objects_have_different_keys():
         'name': 'Jimmy'
     }
 
-    assert_that(map_1, is_(the_same_object(map_2)))
+    assert_that(map_1, not is_(the_same_object(map_2)))
+
+def test_second_object_has_additional_fields():
+    map_1 = {
+        'name': 'Jimmy'
+    }
+    map_2 = {
+        'name': 'Jimmy',
+        'hobby': 'Surfing',
+        'age': 23
+    }
+
+    assert_that(map_1, not is_(the_same_object(map_2)))
