@@ -45,12 +45,16 @@ def test_second_object_has_additional_fields():
 def test_objects_have_different_keys():
     map_1 = {
         'name': 'Justin',
-        'age': 22
+        'age': 22,
+        'activity': 'lifting',
+        'car': 'toyota camry'
     }
 
     map_2 = {
         'name': 'Fred',
-        'job': 'developer'
+        'job': 'developer',
+        'hobby': 'fishing',
+        'music_preference': 'smooth jazz'
     }
 
-    assert_that(map_1, is_the_same_object(map_2))
+    assert_that(map_1, not is_the_same_object(map_2))

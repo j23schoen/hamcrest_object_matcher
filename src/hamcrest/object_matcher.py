@@ -22,7 +22,6 @@ class ObjectsMatch(BaseMatcher):
 
     # this is the item and the fields on the item
     def describe_to(self, description):
-        # description.append_text(self.difference)
         if self.extra_fields:
             description.append_text("The following field(s) only to be on the object:\n")
             keys = [key for key in self.object]
